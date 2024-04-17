@@ -11,7 +11,6 @@ func main() {
 	config.LoadEnv()
 	//Connect db
 	config.GetDB()
-
 	router := gin.Default()
 
 	router.GET("/ping", func(c *gin.Context) {
@@ -19,6 +18,6 @@ func main() {
 			"message": "Pong",
 		})
 	})
-
+	
 	router.Run("localhost:" + os.Getenv("PORT"))
 }
