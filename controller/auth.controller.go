@@ -63,14 +63,13 @@ func (controller *authController) Register(context *gin.Context) {
 		controller.logger.Error().Err(err).Msg("Logger controller")
 		return
 	}
-	result, user := controller.authService.Register(userDto)
-	if result.Error != nil {
-		context.JSON(
-			http.StatusBadRequest, util.GetErrorResponse(result.Error.Error()))
+
+	if err := controller.authService.Register(userDto); err != nil {
+		context.JSON(http.StatusBadRequest, util.GetErrorResponse(err.Error()))
 		controller.logger.Error().Err(err).Msg("")
 		return
 	}
-	context.JSON(http.StatusOK, util.GetResponse(user))
+	context.JSON(http.StatusOK, util.GetResponse(userDto))
 }
 
 func (controller *authController) VerifyToken(context *gin.Context) {

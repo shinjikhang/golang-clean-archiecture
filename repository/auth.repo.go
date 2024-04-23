@@ -9,7 +9,7 @@ import (
 )
 
 type AuthRepo interface {
-	Register(user model.UserCreate) (*gorm.DB, *model.UserCreate)
+	Register(user model.UserCreate) error
 	FindByEmail(email string) (*gorm.DB, model.User)
 }
 
@@ -21,12 +21,14 @@ func NewAuthRepo(db *gorm.DB) *authRepo {
 	return &authRepo{db: db}
 }
 
-func (repo *authRepo) Register(user model.UserCreate) (*gorm.DB, *model.UserCreate) {
-	components := strings.Split(user.Email, "@")
-	user.UserName = components[0] + helper.GenerateRandomString(4)
+func (repo *authRepo) Register(user model.UserCreate) error {
+	emailSplit := strings.Split(user.Email, "@")
+	user.UserName = emailSplit[0] + helper.GenerateRandomString(4)
 	user.Password = hashAndSalt([]byte(user.Password))
-	userResult := repo.db.Create(&user)
-	return userResult, &user
+	if err := repo.db.Create(&user).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func (repo *authRepo) FindByEmail(email string) (*gorm.DB, model.User) {
