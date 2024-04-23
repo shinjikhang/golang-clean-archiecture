@@ -1,9 +1,10 @@
-package handler
+package controller
 
 import (
 	"clean-architecture/service"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type User struct {
