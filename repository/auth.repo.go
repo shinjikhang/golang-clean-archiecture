@@ -5,7 +5,10 @@ import (
 	"clean-architecture/model"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+	"math/rand"
+	"strconv"
 	"strings"
+	"time"
 )
 
 type AuthRepo interface {
@@ -22,9 +25,14 @@ func NewAuthRepo(db *gorm.DB) *authRepo {
 }
 
 func (repo *authRepo) Register(user model.UserCreate) error {
+	activationCode := strconv.Itoa(rand.Intn(999999))
 	emailSplit := strings.Split(user.Email, "@")
 	user.UserName = emailSplit[0] + helper.GenerateRandomString(4)
 	user.Password = hashAndSalt([]byte(user.Password))
+	user.ActivationCode = activationCode
+	user.ActivationCodeExpired = time.Now()
+	user.Role = model.USER_ROLE
+
 	if err := repo.db.Create(&user).Error; err != nil {
 		return err
 	}

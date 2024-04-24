@@ -11,7 +11,7 @@ import (
 )
 
 type AuthController interface {
-	//Login(context *gin.Context)
+	Login(context *gin.Context)
 	Register(context *gin.Context)
 	VerifyToken(context *gin.Context)
 	//RefreshToken(context *gin.Context)
@@ -19,41 +19,44 @@ type AuthController interface {
 
 type authController struct {
 	authService service.AuthService
-	//jwtService  service.JwtService
-	logger *logger.Logger
+	jwtService  service.JwtService
+	logger      *logger.Logger
 }
 
 func NewAuthController(
 	authService service.AuthService,
-	//jwtService service.JwtService,
+	jwtService service.JwtService,
 	logger *logger.Logger,
 ) *authController {
 	return &authController{
 		authService: authService,
-		//jwtService:  jwtService,
-		logger: logger,
+		jwtService:  jwtService,
+		logger:      logger,
 	}
 }
 
-//func (controller *authController) Login(context *gin.Context) {
-//	var loginDto dto.Login
-//	err := context.ShouldBindJSON(&loginDto)
-//	if err != nil {
-//		context.JSON(http.StatusBadRequest, util.GetErrorResponse(err.Error()))
-//		controller.logger.Error().Err(err).Msg("")
-//		return
-//	}
-//	isValidCredential, userId := controller.authService.VerifyCredential(
-//		loginDto.Email, loginDto.Password)
-//	if isValidCredential {
-//		tokenPair := controller.jwtService.GenerateTokenPair(userId)
-//		context.JSON(http.StatusOK, util.GetResponse(tokenPair))
-//		return
-//	}
-//	context.JSON(
-//		http.StatusBadRequest, util.GetErrorResponse("invalid credential"))
-//	controller.logger.Error().Msg("invalid credential")
-//}
+func (controller *authController) Login(context *gin.Context) {
+	var loginDto dto.Login
+	err := context.ShouldBindJSON(&loginDto)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, util.GetErrorResponse(err.Error()))
+		controller.logger.Error().Err(err).Msg("End of time")
+		return
+	}
+	isValidCredential, userId := controller.authService.VerifyCredential(loginDto.Email, loginDto.Password)
+	if !isValidCredential {
+		context.JSON(http.StatusBadRequest, util.GetErrorResponse("invalid credential"))
+		controller.logger.Error().Msg("invalid credential")
+		return
+	}
+	tokenPair, err := controller.jwtService.GenerateTokenPair(userId)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, util.GetErrorResponse(err.Error()))
+		return
+	}
+	context.JSON(http.StatusOK, util.GetResponse(tokenPair))
+	return
+}
 
 func (controller *authController) Register(context *gin.Context) {
 	var userDto dto.Register
@@ -69,7 +72,7 @@ func (controller *authController) Register(context *gin.Context) {
 		controller.logger.Error().Err(err).Msg("")
 		return
 	}
-	context.JSON(http.StatusOK, util.GetResponse(userDto))
+	context.JSON(http.StatusOK, util.GetResponse([]int{}))
 }
 
 func (controller *authController) VerifyToken(context *gin.Context) {

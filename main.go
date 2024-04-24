@@ -4,9 +4,8 @@ import (
 	"clean-architecture/config"
 	"clean-architecture/pkg"
 	"clean-architecture/router"
-	"os"
-
 	"github.com/gin-gonic/gin"
+	"os"
 )
 
 func main() {

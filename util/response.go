@@ -22,7 +22,7 @@ func GetErrorResponse(err string) Response {
 	res := Response{
 		Status: false,
 		Errors: splittedError,
-		Data:   struct{}{},
+		Data:   []int{},
 	}
 	return res
 }

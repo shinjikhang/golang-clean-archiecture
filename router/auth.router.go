@@ -12,18 +12,18 @@ import (
 
 func AuthRoute(db *gorm.DB, authRouter *gin.RouterGroup, logger *logger.Logger) {
 	var (
-		//jwtService     service.JwtService  = service.NewJwtService()
+		jwtService     service.JwtService  = service.NewJwtService()
 		authRepository repository.AuthRepo = repository.NewAuthRepo(db)
 		authService    service.AuthService = service.
 				NewAuthService(authRepository)
 		authController controller.AuthController = controller.
 				NewAuthController(
 				authService,
-				//jwtService,
+				jwtService,
 				logger)
 	)
-	//authRouter.POST("/login", authController.Login)
 	authRouter.POST("/signup", authController.Register)
+	authRouter.POST("/login", authController.Login)
 	//authRouter.POST("/token/verify", authController.VerifyToken)
 	//authRouter.POST("/token/refresh", authController.RefreshToken)
 }
