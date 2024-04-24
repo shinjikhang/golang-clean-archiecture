@@ -13,8 +13,8 @@ func RootRoute(db *gorm.DB, router *gin.Engine, logger *logger.Logger) {
 	//PostRoute(db, postRouter, logger)
 	//commentRouter := apiRouter.Group("/posts/:postId/comments")
 	//CommentRoute(db, commentRouter, logger)
-	//categoryRouter := apiRouter.Group("/categories")
-	//CategoryRoute(db, categoryRouter, logger)
+	categoryRouter := apiRouter.Group("/categories")
+	ProductCategoryRouter(db, categoryRouter, logger)
 	authRouter := apiRouter.Group("/auth")
 	AuthRoute(db, authRouter, logger)
 }

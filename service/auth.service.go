@@ -30,6 +30,7 @@ func (service *authService) Register(userDto dto.Register) error {
 		Name:     userDto.Name,
 		Email:    userDto.Email,
 		Password: userDto.Password,
+		Mobile:   userDto.Mobile,
 		Bio:      userDto.Bio,
 	}
 	if err := service.authRepo.Register(userModel); err != nil {

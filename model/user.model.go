@@ -25,6 +25,7 @@ type UserCreate struct {
 	Name                  string    `json:"name" gorm:"column:name;" db:"name"`
 	Password              string    `json:"password" gorm:"column:password;"`
 	Email                 string    `json:"email" gorm:"column:email;"`
+	Mobile                string    `json:"mobile" gorm:"column:mobile;"`
 	Bio                   *string   `json:"bio" gorm:"column:bio;"`
 	Role                  string    `json:"-" gorm:"column:role;"`
 }
