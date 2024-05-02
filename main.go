@@ -2,10 +2,12 @@ package main
 
 import (
 	"clean-architecture/config"
-	"clean-architecture/pkg"
+	"clean-architecture/middleware"
+	logger "clean-architecture/pkg"
 	"clean-architecture/router"
-	"github.com/gin-gonic/gin"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -17,6 +19,10 @@ func main() {
 	log := logger.NewLogger()
 
 	routerGin := gin.Default()
+
+	// use middleware
+	routerGin.Use(middleware.CORSMiddleware())
+
 	router.RootRoute(db, routerGin, log)
 	routerGin.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{

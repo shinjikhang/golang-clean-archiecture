@@ -27,11 +27,11 @@ func NewProductCategoryController(
 
 func (controller *productCategoryController) GetAll(context *gin.Context) {
 	var catModel model.ProductCategory
-	categories, err := controller.categoryService.GetCategories(catModel)
+	productCategories, err := controller.categoryService.GetCategories(catModel)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, util.GetErrorResponse(err.Error()))
 		return
 	}
-	serializer := serializer.CategoriesSerializer{Categories: categories}
+	serializer := serializer.CategoriesSerializer{ProductCategories: productCategories}
 	context.JSON(http.StatusOK, util.GetResponse(serializer.Response()))
 }

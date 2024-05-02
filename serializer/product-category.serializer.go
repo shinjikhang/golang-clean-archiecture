@@ -11,6 +11,10 @@ type CategorySerializer struct {
 	ProductCategory model.ProductCategory
 }
 
+type CategoriesSerializer struct {
+	ProductCategories []model.ProductCategory
+}
+
 func (serializer *CategorySerializer) Response() CategoryResponse {
 	return CategoryResponse{
 		CategoryId: uint(serializer.ProductCategory.CategoryId),
@@ -18,13 +22,9 @@ func (serializer *CategorySerializer) Response() CategoryResponse {
 	}
 }
 
-type CategoriesSerializer struct {
-	Categories []model.ProductCategory
-}
-
 func (serializer *CategoriesSerializer) Response() []CategoryResponse {
 	response := []CategoryResponse{}
-	for _, category := range serializer.Categories {
+	for _, category := range serializer.ProductCategories {
 		categorySerializer := CategorySerializer{ProductCategory: category}
 		response = append(response, categorySerializer.Response())
 	}
