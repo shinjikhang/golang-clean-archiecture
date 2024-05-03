@@ -13,7 +13,7 @@ import "time"
 //}
 
 type Product struct {
-	ProductId   uint       `json:"-" gorm:"primaryKey:AUTO_INCREMENT;column:product_id"`
+	ProductId   int        `json:"-" gorm:"primaryKey:AUTO_INCREMENT;column:product_id"`
 	Title       string     `json:"title" gorm:"column:title"`
 	Slug        string     `json:"-" gorm:"column:slug"`
 	Description string     `json:"description" gorm:"column:description"`
@@ -30,6 +30,26 @@ type Product struct {
 	UpdatedAt   *time.Time // Automatically managed by GORM for update time
 }
 
+type ProductCreate struct {
+	ProductId   int     `json:"-" gorm:"primaryKey:AUTO_INCREMENT;column:product_id"`
+	Title       string  `json:"title" gorm:"column:title"`
+	Slug        string  `json:"slug" gorm:"column:slug"`
+	Description string  `json:"description" gorm:"column:description"`
+	Brand       string  `json:"brand" gorm:"column:brand"`
+	Price       float32 `json:"price" gorm:"column:price"`
+	SalePrice   float32 `json:"sale_price" gorm:"column:sale_price"`
+	CategoryId  uint    `json:"category_id" gorm:"column:category_id"`
+	Quantity    int     `json:"quantity" gorm:"column:quantity"`
+	Sold        uint    `json:"-" gorm:"column:sold"`
+	Images      string  `json:"images" gorm:"column:images"`
+	Color       string  `json:"-" gorm:"column:color"`
+	Rating      uint    `json:"-" gorm:"column:rating"`
+}
+
 func (Product) TableName() string {
 	return "Product"
+}
+
+func (ProductCreate) TableName() string {
+	return Product{}.TableName()
 }

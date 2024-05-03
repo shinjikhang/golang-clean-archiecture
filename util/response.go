@@ -8,8 +8,8 @@ type Response struct {
 	Data   interface{} `json:"data"`
 }
 
-func GetResponse(data interface{}) Response {
-	res := Response{
+func GetResponse(data interface{}) *Response {
+	res := &Response{
 		Status: true,
 		Errors: nil,
 		Data:   data,
@@ -17,9 +17,9 @@ func GetResponse(data interface{}) Response {
 	return res
 }
 
-func GetErrorResponse(err string) Response {
+func GetErrorResponse(err string) *Response {
 	splittedError := strings.Split(err, "\n")
-	res := Response{
+	res := &Response{
 		Status: false,
 		Errors: splittedError,
 		Data:   []int{},

@@ -2,13 +2,13 @@ package repository
 
 import (
 	"clean-architecture/model"
+	"context"
 	"gorm.io/gorm"
 )
 
 type ProductRepo interface {
-	//Register(user model.UserCreate) error
-	//FindByEmail(email string) (*gorm.DB, model.User)
-	GetCategories(cat model.Product) ([]model.Product, error)
+	//GetCategories(cat model.Product) ([]model.Product, error)
+	Create(ctx context.Context, model model.ProductCreate) error
 }
 
 type productRepo struct {
@@ -25,4 +25,12 @@ func (repo *productRepo) GetAll(cat model.Product) ([]model.Product, error) {
 		return nil, err
 	}
 	return category, nil
+}
+
+func (repo *productRepo) Create(ctx context.Context, product model.ProductCreate) error {
+
+	if err := repo.db.Create(&product).Error; err != nil {
+		return err
+	}
+	return nil
 }
