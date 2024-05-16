@@ -2,13 +2,13 @@ package main
 
 import "database/sql"
 
+type Storage struct {
+	db *sql.DB
+}
+
 type Store interface {
 	// Users
 	CreateUser() error
-}
-
-type Storage struct {
-	db *sql.DB
 }
 
 func NewStore(db *sql.DB) *Storage {
