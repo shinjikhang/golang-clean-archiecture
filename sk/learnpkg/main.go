@@ -2,20 +2,17 @@ package main
 
 import (
 	"fmt"
-	//_ "learnpackage/finance"
-	//_ "learnpackage/simpleinterest"
 )
 
-func main() {
-	employeeSalary := map[string]int{
-		"steve": 12000,
-		"jamie": 15000,
-		"mike":  9000,
+func printBytes(s string) {
+	fmt.Printf("Bytes: ")
+	for i := 0; i < len(s); i++ {
+		fmt.Printf("%x ", s[i])
 	}
-	salary := employeeSalary["joe"]
-	fmt.Println("Salary of jamie", "is", salary)
 }
 
-func init() {
-	fmt.Println("----------Main initialized first----------")
+func main() {
+	name := "Hello World"
+	fmt.Printf("String: %s\n", name)
+	printBytes(name)
 }
