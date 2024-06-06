@@ -21,8 +21,9 @@ type TodoItem struct {
 }
 
 type Pagination struct {
-	Page  int `json:"page" form:"page"`
-	Limit int `json:"limit" form:"limit"`
+	Page  int   `json:"page" form:"page"`
+	Limit int   `json:"limit" form:"limit"`
+	Total int64 `json:"total" form:"-"`
 }
 
 func (p *Pagination) Process() {
@@ -47,9 +48,11 @@ type TodoItemUpdate struct {
 	Status      *string `json:"status" gorm:"column:status"`
 }
 
-func (TodoItem) TableName() string       { return "todo_items" }
-func (TodoItemCreate) TableName() string { return TodoItem{}.TableName() }
-func (TodoItemUpdate) TableName() string { return TodoItem{}.TableName() }
+const tblName = "todo_items"
+
+func (TodoItem) TableName() string       { return tblName }
+func (TodoItemCreate) TableName() string { return tblName }
+func (TodoItemUpdate) TableName() string { return tblName }
 
 func main() {
 	// refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
@@ -206,7 +209,14 @@ func GetListItem(db *gorm.DB) func(ctx *gin.Context) {
 
 		var items []TodoItem
 
-		if err := db.Find(&items).Error; err != nil {
+		if err := db.
+			Model(&TodoItem{}).
+			Count(&pagination.Total).
+			Offset((pagination.Page - 1) * pagination.Limit).
+			Limit(pagination.Limit).
+			Order("id desc").
+			Find(&items).
+			Error; err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
@@ -214,7 +224,8 @@ func GetListItem(db *gorm.DB) func(ctx *gin.Context) {
 		}
 
 		ctx.JSON(http.StatusOK, gin.H{
-			"data": items,
+			"data":       items,
+			"pagination": pagination,
 		})
 	}
 }
