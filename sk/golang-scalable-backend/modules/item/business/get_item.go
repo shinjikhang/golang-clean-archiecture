@@ -18,3 +18,13 @@ type getItemBusiness struct {
 func NewGetItemBusiness(store GetItemStorage) *getItemBusiness {
 	return &getItemBusiness{store: store}
 }
+
+func (b *getItemBusiness) GetItemById(ctx context.Context, id int) (*model.TodoItem, error) {
+	data, err := b.store.GetItem(ctx, map[string]interface{}{"id": id})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}

@@ -11,10 +11,10 @@ var (
 	StatusDone    = "done"
 	StatusDeleted = "deleted"
 
-	ErrItemNotFound = errors.New("item not found")
-	ErrTitleEmpty   = errors.New("Title cannot empty")
-
+	ErrItemNotFound  = errors.New("item not found")
+	ErrTitleEmpty    = errors.New("Title cannot empty")
 	ErrStatusInvalid = errors.New("Status invalid")
+	ErrItemIsDeleted = errors.New("Item is deleted")
 )
 
 type TodoItem struct {

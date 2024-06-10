@@ -16,7 +16,6 @@ func NewCreateItemBusiness(store CreateItemStorage) *createItemBusiness {
 	return &createItemBusiness{store: store}
 }
 
-// METHOD
 func (b *createItemBusiness) CreateItem(ctx context.Context, data *model.TodoItemCreate) error {
 	if err := data.Validate(); err != nil {
 		return err
