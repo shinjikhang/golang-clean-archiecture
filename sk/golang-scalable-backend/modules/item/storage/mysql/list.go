@@ -4,6 +4,7 @@ import (
 	"clean-architecture/sk/golang-scalable-backend/common"
 	"clean-architecture/sk/golang-scalable-backend/modules/item/model"
 	"context"
+	"fmt"
 )
 
 func (s *sqlStore) GetItems(ctx context.Context, filter *model.Filter, pagination *common.Pagination, moreKey ...string) ([]model.TodoItem, error) {
@@ -13,6 +14,7 @@ func (s *sqlStore) GetItems(ctx context.Context, filter *model.Filter, paginatio
 
 	if f := filter; f != nil {
 		if status := f.Status; status != "" {
+			fmt.Println("aa")
 			db = db.Where("status = ?", status)
 		}
 	}

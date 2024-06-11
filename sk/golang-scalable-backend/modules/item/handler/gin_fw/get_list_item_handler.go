@@ -5,6 +5,7 @@ import (
 	"clean-architecture/sk/golang-scalable-backend/modules/item/business"
 	"clean-architecture/sk/golang-scalable-backend/modules/item/model"
 	"clean-architecture/sk/golang-scalable-backend/modules/item/storage/mysql"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"net/http"
@@ -13,10 +14,13 @@ import (
 func GetListItem(db *gorm.DB) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		var queryString struct {
-			Search     string `form:"search"`
-			pagination common.Pagination
-			filter     model.Filter
+			//Search     string `form:"search"`
+			common.Pagination
+			model.Filter
 		}
+
+		//log request query
+		fmt.Println(ctx.Request.URL.Query())
 
 		if err := ctx.ShouldBindQuery(&queryString); err != nil {
 			ctx.JSON(http.StatusBadRequest, gin.H{
@@ -25,12 +29,12 @@ func GetListItem(db *gorm.DB) func(ctx *gin.Context) {
 			return
 		}
 
-		queryString.pagination.Process()
+		queryString.Pagination.Process()
 
 		store := mysql.NewSQLStore(db)
 		biz := business.NewGetListItemBusiness(store)
 
-		items, err := biz.GetItems(ctx.Request.Context(), &queryString.filter, &queryString.pagination)
+		items, err := biz.GetItems(ctx.Request.Context(), &queryString.Filter, &queryString.Pagination)
 
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -39,6 +43,6 @@ func GetListItem(db *gorm.DB) func(ctx *gin.Context) {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, common.NewSuccessResponse(items, queryString.pagination, queryString.filter))
+		ctx.JSON(http.StatusOK, common.NewSuccessResponse(items, queryString.Pagination, queryString.Filter))
 	}
 }

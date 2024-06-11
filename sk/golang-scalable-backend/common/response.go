@@ -1,7 +1,7 @@
 package common
 
 type Response struct {
-	Code       int         `json:"code" default:"200"`
+	//Code       int         `json:"code"`
 	Data       interface{} `json:"data"`
 	Pagination interface{} `json:"pagination,omitempty"` // neu key la nil thi se khong hien thi trong json
 	Filter     interface{} `json:"filter,omitempty"`
@@ -21,7 +21,7 @@ func SimpleSuccessResponse(data interface{}) *Response {
 
 func ErrorResponse(code int, err error) *Response {
 	return &Response{
-		Code: code,
+		//Code: code,
 		Data: struct {
 			Error string `json:"error"`
 		}{
