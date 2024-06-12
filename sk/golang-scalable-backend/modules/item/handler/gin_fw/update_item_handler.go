@@ -34,9 +34,7 @@ func UpdateItem(db *gorm.DB) func(ctx *gin.Context) {
 		biz := business.NewUpdateItemBusiness(store)
 
 		if err := biz.UpdateItemById(ctx.Request.Context(), id, &updateData); err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(http.StatusBadRequest, err)
 			return
 		}
 		ctx.JSON(http.StatusOK, common.SimpleSuccessResponse(true))

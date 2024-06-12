@@ -1,6 +1,7 @@
 package business
 
 import (
+	"clean-architecture/sk/golang-scalable-backend/common"
 	"clean-architecture/sk/golang-scalable-backend/modules/item/model"
 	"context"
 )
@@ -21,7 +22,7 @@ func (b *deleteItemBusiness) DeleteItemById(ctx context.Context, id int) error {
 	data, err := b.store.GetItem(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {
-		return err
+		return common.ErrCannotGetEntity(model.EntityName, err)
 	}
 
 	if data.Status == "Deleted" {
@@ -29,7 +30,7 @@ func (b *deleteItemBusiness) DeleteItemById(ctx context.Context, id int) error {
 	}
 
 	if err := b.store.DeleteItem(ctx, map[string]interface{}{"id": id}); err != nil {
-		return err
+		return common.ErrCannotDeleteEntity(model.EntityName, err)
 	}
 
 	return nil

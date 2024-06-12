@@ -25,7 +25,7 @@ func (b *listItemBusiness) GetItems(ctx context.Context, filter *model.Filter, p
 	data, err := b.store.GetItems(ctx, filter, pagination)
 
 	if err != nil {
-		return nil, err
+		return nil, common.ErrCannotListEntity(model.EntityName, err)
 	}
 
 	return data, nil

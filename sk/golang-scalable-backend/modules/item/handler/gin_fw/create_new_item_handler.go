@@ -28,9 +28,7 @@ func CreateItem(db *gorm.DB) func(ctx *gin.Context) {
 		// Lấy dữ liệu từ request và gọi business logic để tạo mới item trong database
 		// (lưu ý: business logic không nên truy cập request hoặc response)
 		if err := biz.CreateItem(ctx.Request.Context(), &itemData); err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
+			ctx.JSON(http.StatusBadRequest, err)
 			return
 		}
 

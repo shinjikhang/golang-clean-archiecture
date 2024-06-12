@@ -1,6 +1,7 @@
 package business
 
 import (
+	"clean-architecture/sk/golang-scalable-backend/common"
 	"clean-architecture/sk/golang-scalable-backend/modules/item/model"
 	"context"
 )
@@ -23,7 +24,7 @@ func (b *getItemBusiness) GetItemById(ctx context.Context, id int) (*model.TodoI
 	data, err := b.store.GetItem(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {
-		return nil, err
+		return nil, common.ErrCannotGetEntity(model.EntityName, err)
 	}
 
 	return data, nil

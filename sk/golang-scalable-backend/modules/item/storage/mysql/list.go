@@ -27,7 +27,7 @@ func (s *sqlStore) GetItems(ctx context.Context, filter *model.Filter, paginatio
 		Offset((pagination.Page - 1) * pagination.Limit).
 		Limit(pagination.Limit).
 		Find(&items).Error; err != nil {
-		return nil, err
+		return nil, common.ErrDB(err)
 	}
 
 	return items, nil

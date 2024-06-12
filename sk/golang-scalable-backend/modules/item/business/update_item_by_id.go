@@ -1,6 +1,7 @@
 package business
 
 import (
+	"clean-architecture/sk/golang-scalable-backend/common"
 	"clean-architecture/sk/golang-scalable-backend/modules/item/model"
 	"context"
 )
@@ -21,7 +22,7 @@ func (b *updateItemBusiness) UpdateItemById(ctx context.Context, id int, dataUpd
 	data, err := b.store.GetItem(ctx, map[string]interface{}{"id": id})
 
 	if err != nil {
-		return err
+		return common.ErrCannotGetEntity(model.EntityName, err)
 	}
 
 	if data.Status == "Deleted" {
@@ -29,7 +30,7 @@ func (b *updateItemBusiness) UpdateItemById(ctx context.Context, id int, dataUpd
 	}
 
 	if err := b.store.UpdateItem(ctx, map[string]interface{}{"id": id}, dataUpdate); err != nil {
-		return err
+		return common.ErrCannotUpdateEntity(model.EntityName, err)
 	}
 
 	return nil

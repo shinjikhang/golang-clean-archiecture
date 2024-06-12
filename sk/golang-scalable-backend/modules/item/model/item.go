@@ -17,6 +17,10 @@ var (
 	ErrItemIsDeleted = errors.New("Item is deleted")
 )
 
+const (
+	EntityName = "TodoItem"
+)
+
 type TodoItem struct {
 	common.SqlBase
 	Title       string `json:"title" gorm:"column:title;'"`
@@ -24,7 +28,7 @@ type TodoItem struct {
 	Status      string `json:"status" gorm:"column:status;"`
 }
 type TodoItemCreate struct {
-	Id          int    `json:"id" gorm:"column:id" binding:"required"`
+	Id          int    `json:"id" gorm:"column:id"`
 	Title       string `json:"title" gorm:"column:title"`
 	Description string `json:"description" gorm:"column:description"`
 	Status      string `json:"status" gorm:"column:status"`

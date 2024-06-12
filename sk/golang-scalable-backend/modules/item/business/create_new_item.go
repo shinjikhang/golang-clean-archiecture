@@ -1,6 +1,7 @@
 package business
 
 import (
+	"clean-architecture/sk/golang-scalable-backend/common"
 	"clean-architecture/sk/golang-scalable-backend/modules/item/model"
 	"context"
 )
@@ -18,11 +19,11 @@ func NewCreateItemBusiness(store CreateItemStorage) *createItemBusiness {
 
 func (b *createItemBusiness) CreateItem(ctx context.Context, data *model.TodoItemCreate) error {
 	if err := data.Validate(); err != nil {
-		return err
+		return common.ErrValidation(err)
 	}
 
 	if err := b.store.CreateItem(ctx, data); err != nil {
-		return err
+		return common.ErrCannotCreateEntity(model.EntityName, err)
 	}
 
 	return nil
