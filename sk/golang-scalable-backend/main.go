@@ -1,7 +1,9 @@
 package main
 
 import (
+	"clean-architecture/sk/golang-scalable-backend/middleware"
 	"clean-architecture/sk/golang-scalable-backend/modules/item/handler/gin_fw"
+	"clean-architecture/sk/golang-scalable-backend/modules/upload"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -21,8 +23,15 @@ func main() {
 	log.Println("Connected to database", db)
 
 	r := gin.Default()
+	r.Use(middleware.Recover())
+
+	//static
+	r.Static("/uploads", "./uploads") // dùng để serve file tĩnh từ thư mục uploads (ví dụ: http://localhost:8080/uploads/abc.jpg)
+
 	v1 := r.Group("/api/v1")
 	{
+		// upload route
+		v1.POST("/upload", upload.Upload(db))
 		items := v1.Group("/items")
 		{
 			items.GET("", gin_fw.GetListItem(db))

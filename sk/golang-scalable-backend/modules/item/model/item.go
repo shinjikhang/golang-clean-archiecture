@@ -23,9 +23,10 @@ const (
 
 type TodoItem struct {
 	common.SqlBase
-	Title       string `json:"title" gorm:"column:title;'"`
-	Description string `json:"description" gorm:"column:description;"`
-	Status      string `json:"status" gorm:"column:status;"`
+	Title       string        `json:"title" gorm:"column:title;'"`
+	Description string        `json:"description" gorm:"column:description;"`
+	Status      string        `json:"status" gorm:"column:status;"`
+	Image       *common.Image `json:"image" gorm:"column:image;"` // dùng con trỏ để có thể null -> null khi không có ảnh
 }
 type TodoItemCreate struct {
 	Id          int    `json:"id" gorm:"column:id"`
@@ -34,9 +35,10 @@ type TodoItemCreate struct {
 	Status      string `json:"status" gorm:"column:status"`
 }
 type TodoItemUpdate struct {
-	Title       string  `json:"title" gorm:"column:title"` //pointer cho phep update chuoi rong
-	Description *string `json:"description" gorm:"column:description"`
-	Status      *string `json:"status" gorm:"column:status"`
+	Title       string        `json:"title" gorm:"column:title"` //pointer cho phep update chuoi rong
+	Description *string       `json:"description" gorm:"column:description"`
+	Status      *string       `json:"status" gorm:"column:status"`
+	Image       *common.Image `json:"image" gorm:"column:image;"` // dùng con trỏ để có thể null -> null khi không có ảnh
 }
 
 const tblName = "todo_items"
