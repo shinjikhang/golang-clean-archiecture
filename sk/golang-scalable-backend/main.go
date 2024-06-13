@@ -19,6 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Println("Connected to database", db)
+
 	r := gin.Default()
 	v1 := r.Group("/api/v1")
 	{

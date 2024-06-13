@@ -1,5 +1,9 @@
-package main
+package common
 
-func main() {
+import "log"
 
+func Recovery() {
+	if r := recover(); r != nil {
+		log.Println("Recovered from ", r)
+	}
 }

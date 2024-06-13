@@ -13,6 +13,18 @@ import (
 
 func GetItem(db *gorm.DB) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
+		// Panic and recover test
+		// demo panic and recover
+		//go func() {
+		//	defer common.Recovery()
+		//
+		//	var a []int
+		//	log.Println(a[0])
+		//}()
+
+		var a []int
+		log.Println(a[0])
+
 		//var itemData model.TodoItem
 		id, err := strconv.Atoi(ctx.Param("id"))
 

@@ -37,7 +37,7 @@ func GetListItem(db *gorm.DB) func(ctx *gin.Context) {
 		items, err := biz.GetItems(ctx.Request.Context(), &queryString.Filter, &queryString.Pagination)
 
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, err)
+			ctx.JSON(http.StatusBadRequest, err)
 			return
 		}
 
